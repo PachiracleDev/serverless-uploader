@@ -1,0 +1,26 @@
+service: serverless-uploader
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  environment:
+    S3_UPLOAD_KEY: ${env:S3_UPLOAD_KEY}
+    S3_UPLOAD_SECRET: ${env:S3_UPLOAD_SECRET}
+    S3_UPLOAD_BUCKET: ${env:S3_UPLOAD_BUCKET}
+    S3_UPLOAD_REGION: ${env:S3_UPLOAD_REGION}
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
